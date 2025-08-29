@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login • ATS Portal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body class="auth-body">
+  <div class="auth-card fade-up">
+    <h2 id="authTitle">Login</h2>
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email" required />
+      <input id="password" type="password" placeholder="Password" required />
+      <button class="btn" type="submit"><span id="authButtonText">Login</span></button>
+      <p class="muted">
+        <span id="authToggleText">Don't have an account?</span>
+        <a href="#" id="authToggle">Sign up</a>
+      </p>
+    </form>
+  </div>
+
+  <script src="assets/js/firebase.js"></script>
+  <script>
+    let isSignUp = false;
+    const params = new URLSearchParams(window.location.search);
+    const isAdminRoute = params.get("admin") === "true";
+    const ADMIN_EMAIL = "admin@devopify.com"; // change in prod
+
+    function updateAuthForm() {
+      const title = document.getElementById('authTitle');
+      const buttonText = document.getElementById('authButtonText');
+      const toggleText = document.getElementById('authToggleText');
+      const toggle = document.getElementById('authToggle');
+
+      if (isSignUp) {
+          title.textContent = 'Sign Up';
+          buttonText.textContent = 'Sign Up';
+          toggleText.textContent = 'Already have an account?';
+          toggle.textContent = 'Login';
+      } else {
+          title.textContent = 'Login';
+          buttonText.textContent = 'Login';
+          toggleText.textContent = "Don't have an account?";
+          toggle.textContent = 'Sign up';
+      }
+    }
+
+    document.getElementById('authToggle').addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignUp = !isSignUp;
+      updateAuthForm();
+    });
+
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        if (isSignUp) {
+          await firebase.auth().createUserWithEmailAndPassword(email, password);
+        } else {
+          await firebase.auth().signInWithEmailAndPassword(email, password);
+        }
+      } catch (err) {
+        alert("Auth failed: " + err.message);
+      }
+    });
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) return;
+      if (isAdminRoute) {
+        if (user.email === ADMIN_EMAIL) {
+          window.location.href = "admin-dashboard.html";
+        } else {
+          alert("Unauthorized. Not an admin.");
+          firebase.auth().signOut();
+        }
+      } else {
+        window.location.href = "client-dashboard.html";
+      }
+    });
+
+    updateAuthForm();
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ATS Portal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="logo">ATS<span>Portal</span></div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a class="btn" href="login.html">Join</a>
+        <a class="btn ghost" href="login.html?admin=true">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1 class="fade-up">Track ATS Scores Effortlessly</h1>
+      <p class="muted fade-up delay-1">
+        Upload resumes, compute ATS scores, and manage cohorts with an elegant, minimal dashboard.
+      </p>
+      <div class="cta fade-up delay-2">
+        <a class="btn" href="login.html">Get Started</a>
+        <a class="btn ghost" href="#how">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="container features">
+    <div class="card fade-up">
+      <h3>Simple</h3>
+      <p>Clean UI to submit resumes and view scores.</p>
+    </div>
+    <div class="card fade-up delay-1">
+      <h3>Fast</h3>
+      <p>Local scoring with optional external API.</p>
+    </div>
+    <div class="card fade-up delay-2">
+      <h3>Admin Insights</h3>
+      <p>Filter by class and semester, search students, view GitHub activity.</p>
+    </div>
+  </section>
+
+  <section id="how" class="container how">
+    <h2>How it works</h2>
+    <ol>
+      <li>User creates an account and uploads PDF.</li>
+      <li>Resume stored in Cloudflare R2, ATS score saved in Firebase.</li>
+      <li>Admin reviews cohort metrics and individual profiles.</li>
+    </ol>
+  </section>
+
+  <footer class="container footer">
+    <span>© <span id="year"></span> ATS Portal</span>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

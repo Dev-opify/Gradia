@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • ATS Portal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <header class="subnav container">
+    <div class="logo small">ATS<span>Portal</span></div>
+    <button id="logoutBtn" class="btn ghost sm">Logout</button>
+  </header>
+
+  <main class="container">
+    <section class="grid-3">
+      <div class="stat card fade-up">
+        <h3>Total Candidates</h3>
+        <div id="totalStudents">0</div>
+      </div>
+      <div class="stat card fade-up delay-1">
+        <h3>Avg ATS (All)</h3>
+        <div id="avgATSScore">0</div>
+      </div>
+      <div class="stat card fade-up delay-2">
+        <h3>Avg ATS (Class)</h3>
+        <div id="selectedClassAvg">0</div>
+      </div>
+    </section>
+
+    <section class="controls card fade-up">
+      <div class="row">
+        <select id="classFilter">
+          <option value="">All Classes</option>
+        </select>
+        <select id="semesterFilter">
+          <option value="">All Semesters</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <input id="searchStudent" placeholder="Search by name or class" />
+      </div>
+    </section>
+
+    <section id="studentsList" class="list card fade-up">
+      <!-- populated by admin.js -->
+    </section>
+
+    <dialog id="studentModal" class="modal">
+      <div class="modal-content card">
+        <button id="closeModal" class="btn ghost sm" style="float:right;">Close</button>
+        <h3 id="modalStudentName"></h3>
+        <div id="modalStudentDetails"></div>
+      </div>
+    </dialog>
+  </main>
+
+  <script src="assets/js/firebase.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script src="assets/js/github.js"></script>
+</body>
+</html>

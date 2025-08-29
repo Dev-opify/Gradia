@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard • ATS Portal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <header class="subnav container">
+    <div class="logo small">ATS<span>Portal</span></div>
+    <button id="logoutBtn" class="btn ghost sm">Logout</button>
+  </header>
+
+  <main class="container grid-2">
+    <section class="card fade-up">
+      <h2>Submit Your Details</h2>
+      <form id="detailsForm">
+        <input id="studentName" placeholder="Full Name" required />
+        <input id="studentClass" placeholder="Class (e.g., 2CSE5)" required />
+        <input id="studentSemester" type="number" min="1" max="10" placeholder="Semester (e.g., 3)" required />
+        <input id="githubLink" type="url" placeholder="GitHub URL" required />
+        <input id="linkedinLink" type="url" placeholder="LinkedIn URL" required />
+        <input id="resumeFile" type="file" accept="application/pdf" required />
+        <button class="btn" type="submit"><span id="submitText">Save</span></button>
+      </form>
+      <p class="muted tiny">Your resume PDF is stored in Cloudflare R2. Text is used locally to compute ATS score.</p>
+    </section>
+
+    <section class="card fade-up delay-1" id="profileCard" style="display:none;">
+      <h2>Your Profile</h2>
+      <div id="profile">
+        <p><strong>Name:</strong> <span id="pName"></span></p>
+        <p><strong>Class:</strong> <span id="pClass"></span></p>
+        <p><strong>Semester:</strong> <span id="pSem"></span></p>
+        <p><strong>GitHub:</strong> <a id="pGit" target="_blank">View</a></p>
+        <p><strong>LinkedIn:</strong> <a id="pLin" target="_blank">View</a></p>
+        <p><strong>ATS Score:</strong> <span id="pATS"></span>/100</p>
+        <p><strong>Resume:</strong> <a id="pResume" target="_blank">Open PDF</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/firebase.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
