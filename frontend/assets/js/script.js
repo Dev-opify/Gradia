@@ -55,10 +55,11 @@ document.getElementById("detailsForm").addEventListener("submit", async (e) => {
     }
 
     // 3) Upload resume to Cloudflare R2 via backend
+    const BACKEND_URL = "https://gradia-ig8e.onrender.com";
     const formDataUpload = new FormData();
     formDataUpload.append("resume", resumeFile);
     formDataUpload.append("uid", user.uid);
-    const uploadResponse = await fetch("/upload", { method: "POST", body: formDataUpload });
+    const uploadResponse = await fetch(`${BACKEND_URL}/upload`, { method: "POST", body: formDataUpload });
     if (!uploadResponse.ok) throw new Error("Failed to upload resume to R2");
     const { resumeUrl } = await uploadResponse.json();
 
