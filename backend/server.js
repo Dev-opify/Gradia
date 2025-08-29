@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { uploadToR2 } from "./r2.js";
+import fetch from "node-fetch";
+
 
 dotenv.config();
 
@@ -57,6 +59,24 @@ app.post("/ats-score", async (req, res) => {
 
 // Serve frontend for local dev (optional)
 app.use("/", express.static(path.resolve("./frontend")));
+
+// Proxy GitHub contributions calendar (avoids CORS)
+app.get("/github/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const response = await fetch(`https://github.com/users/${username}/contributions`);
+    if (!response.ok) {
+      return res.status(response.status).send("Failed to fetch from GitHub");
+    }
+    const svg = await response.text();
+    res.set("Content-Type", "image/svg+xml");
+    res.send(svg);
+  } catch (err) {
+    console.error("GitHub proxy error:", err);
+    res.status(500).send("Failed to fetch GitHub contributions");
+  }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Backend running on :${PORT}`));
