@@ -25,7 +25,7 @@ app.post("/upload", upload.single("resume"), async (req, res) => {
     const { uid } = req.body;
     const original = req.file.originalname || "resume.pdf";
     const sanitized = original.replace(/[^a-zA-Z0-9.\-_]/g, "_");
-    const key = `resumes/${uid}/${Date.now()}_${sanitized}`;
+    const key = `resume/${uid}/${Date.now()}_${sanitized}`;
 
     const url = await uploadToR2({
       key,
@@ -62,18 +62,19 @@ app.use("/", express.static(path.resolve("./frontend")));
 
 // Proxy GitHub contributions calendar (avoids CORS)
 app.get("/github/:username", async (req, res) => {
+  const { username } = req.params;
   try {
-    const { username } = req.params;
     const response = await fetch(`https://github.com/users/${username}/contributions`);
-    if (!response.ok) {
-      return res.status(response.status).send("Failed to fetch from GitHub");
-    }
+    if (!response.ok) throw new Error("GitHub fetch failed");
+
     const svg = await response.text();
-    res.set("Content-Type", "image/svg+xml");
+
+    // Serve as plain HTML (prevents strict XML parsing errors)
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(svg);
-  } catch (err) {
-    console.error("GitHub proxy error:", err);
-    res.status(500).send("Failed to fetch GitHub contributions");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(`Unable to fetch GitHub activity for ${username}`);
   }
 });
 
